@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title>D3 tutorial</title>
+        <script src="https://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
+
+    </head>
+    <body>
+        <script>
+           
+            var y = d3.scale.linear().range([1000,0]);
+              
+            d3.json("myData.json",function(data){
+               
+                y.domain([0,d3.max(data,function(d){return d.age;})]);
+              
+                var colorScale = d3.scale.ordinal().range(["red","blue"]);
+                var barWidth = 200/data.length;
+                var canvas = d3.select("body")
+                .append("svg")
+                .attr("height", 200)
+                .attr("width", 200);
+                
+                var bar =canvas.selectAll("g")
+                .data(data)
+                .enter().append("g")
+                .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+             
+                bar.append("rect")
+                .attr("y", function(d) { return y(d.age); })
+                .attr("height", function(d) { return 1000 - y(d.age); })
+                .attr("width", barWidth - 1);
+
+                bar.append("text")
+                .attr("x", barWidth / 2)
+                .attr("y", function(d) { return y(d.age) + 3; })
+                .attr("dy", ".75em")
+                .text(function(d) { return d.name; });
+            
+            });
+              	
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,18 @@
+//header
+<script src="http://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
+//
+
+
+var dataArray = [30,40,50,60];
+var width = 500;
+var height = 500;
+var widthScale = d3.scale.linear().domain([0,d3.max(dataArray)]).range([0,width]);
+var colorScale = d3.scale.linear().domain([0,60]).range(["red","blue"]);
+var canvas = d3.select("body").append("svg").attr("height",height).attr("width",width);
+var bar = canvas.selectAll("rect")
+                .data(dataArray)
+                .enter().append("rect")
+                .attr("width",function(d){return widthScale(d);})
+                .attr("height", "40")
+ 	               .attr("fill",function(d){return colorScale(d);})
+                .attr("y",function(d,i){return i*42});

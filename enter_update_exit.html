@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>D3 tutorial</title>
+        <script src="https://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
+
+    </head>
+    <body>
+        <script>
+	
+           //dom elements < data elements 
+           //dom elements > data elements 
+           //dom elements = data elements 
+           var data =[10,20,30];
+           var canvas = d3.select("body")
+                        .append("svg")
+                        .attr("width",1000)
+                        .attr("height", 1000);
+           
+           var cricle1 =  canvas.append("circle")
+                          .attr("cx",50)
+                          .attr("cy",100)
+                          .attr("r", 25)
+                          .attr("fill","red");
+           
+           var circle2 = canvas.append("circle")
+                         .attr("cx",50)
+                         .attr("cy",200)
+                         .attr("r",25)
+                         .attr("fill", "blue");
+           
+           var circle = canvas.selectAll("circle")
+                        .data(data)
+                        .enter()
+                            .append("circle")
+                            .attr("cx",50)
+                            .attr("cy",300)
+                            .attr("r",25)
+                            .attr("fill","green");
+		
+        </script>
+
+    </body>
+</html>

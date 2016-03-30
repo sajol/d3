@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>D3 tutorial</title>
+        <script src="https://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
+
+    </head>
+    <body>
+        <script>
+	   //angle is calculated in radian. total circle is 2pi radian
+           //elements of arc innerRadius outerRadius startAngle endAngle
+           
+           d3.json("myData.json",function(data){
+              var canvas = d3.select("body")
+                  .append("svg")
+                  .attr("height", 500)
+                  .attr("width", 500);
+                  
+              
+              var group = canvas.append("g")
+                  .attr("transform","translate(200,100)")
+              
+              var arc =  d3.svg.arc()
+                         .innerRadius(80)
+                         .outerRadius(100)
+                         .startAngle(0)
+                         .endAngle(Math.PI * 2);
+              
+              group.append("path")
+                    .attr("d",arc);
+              
+            
+           });
+              	
+        </script>
+
+    </body>
+</html>

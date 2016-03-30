@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>D3 tutorial</title>
+        <script src="https://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
+
+    </head>
+    <body>
+        <script>
+            
+            
+            d3.json("myData.json",function(data){
+                var width = 300,
+                height = 200;
+                
+                //oridinal scale to map oridinal domain data to discrete range
+                var x = d3.scale.ordinal()
+                .domain(data.map(function(d){return d.name;}))
+                .rangeRoundBands([0,width],.0091);
+               
+                //
+                var y = d3.scale.linear()
+                .domain([0,d3.max(data, function(d){return d.age;})])
+                .range([height,0]);
+                      
+                    
+                var xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom");
+                
+                var yAxis = d3.svg.axis()
+                .scale(y)
+                .orient("left");
+                
+                //setting up canvas
+                var canvas = d3.select("body")
+                .append("svg")
+                .attr("height",height + 40)
+                .attr("width",width + 40)
+                .append("g")
+                .attr("transform","translate(30,10)");
+               
+                //setting up bars
+                canvas.selectAll("rect")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("transform", function(d, i) { return "translate(" + x(d.name) + ",0)"; })
+                .attr("width", x.rangeBand())
+                .attr("height",function(d){return  height - y(d.age) ;})
+                .attr("y",function(d){return y(d.age) ;})
+                .attr("fill","red");
+                
+                //setting up text
+                canvas.selectAll("text")
+                .data(data)
+                .enter()
+                .append("text")
+                .attr("transform", function(d, i) { return "translate(" + (x(d.name)+(10)) + ",0)"; })
+                .attr("fill","black")
+                .attr("y",function(d){return y(d.age)+20 ;})
+                .text(function(d){return d.name;})
+                
+                //setting up axis
+                canvas.append("g")
+                .call(yAxis);
+                
+                canvas.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+            });   	
+        </script>
+
+    </body>
+</html>

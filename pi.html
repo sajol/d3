@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <title>D3 tutorial</title>
+        <script src="https://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
+
+    </head>
+    <body>
+        <script>
+	   //angle is calculated in radian. total circle is 2pi radian
+           //elements of arc innerRadius outerRadius startAngle endAngle
+           
+           d3.json("myData.json",function(data){
+              
+              
+              var canvas = d3.select("body")
+                  .append("svg")
+                  .attr("height", 1500)
+                  .attr("width", 1500);
+              
+              var group = canvas.append("g")
+                  .attr("transform","translate(300,300)");
+                  
+              
+              var radius = 300;
+              
+              //scaling for providing color to our pie . In this case ordinal.
+              var colorScale = d3.scale.ordinal().range(["red","blue","yellow"]);
+              
+              //creating basic arc with radius
+              var arc = d3.svg.arc()
+                        //nice thing is just set the inner radius to 0 which will create a pie chart for us
+                        //.innerRadius(200)
+                        .innerRadius(0)
+                        .outerRadius(radius);
+                                            
+              // this is the layout that will give us the startAngle and endAngle from the data          
+              var pieLayout = d3.layout.pie()
+                              .value(function(d){return d.age;});
+              
+              //creating group of arcs that will contain the arc startAngle and engAngle from pieLayout
+              var arcs = group.selectAll(".arc")
+                  .data(pieLayout(data))
+                  .enter()
+                  .append("g")
+                  .attr("class","arc");
+              
+              //path that will use the arc for its data (arc data)
+              arcs.append("path")
+                  .attr("d",arc)
+                  .attr("fill",function(d){return colorScale(d.data.age)});
+              // text that will be displayed at the center for each arch of each data                  
+              arcs.append("text")
+                  .attr("transform",function(d){return "translate(" + arc.centroid(d)+")";})
+                  .attr("text-anchor","middle")
+                  .attr("font-size","1.5em")
+                  .text(function(d){return d.data.name + "("+d.data.age+")"});
+              
+           });
+              	
+        </script>
+
+    </body>
+</html>
